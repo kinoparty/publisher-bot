@@ -65,7 +65,8 @@ def handle_photo_post(message):
         btn = telebot.types.InlineKeyboardButton(text="Узнать цену / Наличие", url="https://t.me/твой_контакт")
         markup.add(btn)
         
-        bot.send_photo(chat_id=CHANNEL_ID, photo=processed_image, caption=caption, reply_markup=markup)
+        full_post_text = f"{caption}\n\n{FOOTER_TEXT}"
+bot.send_photo(chat_id=CHANNEL_ID, photo=processed_image, caption=full_post_text, reply_markup=markup)
         bot.reply_to(message, "Опубликовано.")
         
     except Exception as e:
