@@ -8,8 +8,8 @@ TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN", "8590903863:AAElvfoY4TyDoWoqXY
 bot = telebot.TeleBot(TELEGRAM_TOKEN)
 app = Flask(__name__)
 
-CHANNEL_ID = "@TIR_PegasAT" 
-ADMINS = 8073382390 
+CHANNEL_ID = "@TIR_PegasAT"
+ADMINS = [8073382390]
 WATERMARK_TEXT = "MOST AUTO"
 
 FOOTER_TEXT = """
@@ -62,11 +62,11 @@ def handle_photo_post(message):
         processed_image = process_image(img_io)
         
         markup = telebot.types.InlineKeyboardMarkup()
-        btn = telebot.types.InlineKeyboardButton(text="Узнать цену / Наличие", url="https://t.me/твой_контакт")
+        btn = telebot.types.InlineKeyboardButton(text="Узнать цену / Наличие", url="https://t.me/TIR_PegasAT")
         markup.add(btn)
         
         full_post_text = f"{caption}\n\n{FOOTER_TEXT}"
-bot.send_photo(chat_id=CHANNEL_ID, photo=processed_image, caption=full_post_text, reply_markup=markup)
+        bot.send_photo(chat_id=CHANNEL_ID, photo=processed_image, caption=full_post_text, reply_markup=markup)
         bot.reply_to(message, "Опубликовано.")
         
     except Exception as e:
@@ -85,4 +85,3 @@ def webhook():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get('PORT', 8080)))
-      
