@@ -8,8 +8,8 @@ TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN", "8590903863:AAElvfoY4TyDoWoqXY
 bot = telebot.TeleBot(TELEGRAM_TOKEN)
 app = Flask(__name__)
 
-CHANNEL_ID = "@твой_канал" 
-ADMINS = [123456789, 987654321] 
+CHANNEL_ID = "@TIR_PegasAT" 
+ADMINS = 8073382390 
 WATERMARK_TEXT = "MOST AUTO"
 
 def process_image(photo_bytes):
