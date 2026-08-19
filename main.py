@@ -4,7 +4,7 @@ from flask import Flask, request
 from io import BytesIO
 from PIL import Image, ImageDraw, ImageFont
 
-TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN", "твой_токен_если_нет_в_переменных")
+TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN", "8590903863:AAHq0BYH9x9DqqHIyMOZRTnoift_cyhowSM")
 bot = telebot.TeleBot(TELEGRAM_TOKEN)
 app = Flask(__name__)
 
