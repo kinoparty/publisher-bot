@@ -12,13 +12,12 @@ CHANNEL_ID = "@TIR_PegasAT"
 ADMINS = [551563550]
 WATERMARK_TEXT = "MOST AUTO"
 
-FOOTER_TEXT = """
-📞 Потрібна допомога з підбором?
+FOOTER_TEXT = """<b>📞 Потрібна допомога з підбором?</b>
 Наші фахівці швидко підберуть необхідну деталь саме для вашого автомобіля.
 
-📞 0953450040  📞 0973450040
+🔴 0953450040  🔹 0973450040
 
-PEGAS АВТОТРЕЙД
+<b>PEGAS АВТОТРЕЙД</b>
 ✔️ Оригінальні запчастини IVECO
 💳 Безготівковий розрахунок
 📦 Самовивіз або доставка Новою Поштою
@@ -41,28 +40,42 @@ def process_image(photo_bytes):
 @bot.message_handler(content_types=['photo', 'document', 'text'])
 def handle_photo_post(message):
     if message.from_user.id not in ADMINS:
-        bot.reply_to(message, f"БЛОКИРОВКА! Твой реальный ID: {message.from_user.id}. А в коде прописан: {ADMINS}")
         return
+        
     if message.content_type != 'photo':
         bot.reply_to(message, f"Ошибка: Ты прислал {message.content_type}, а нужно сжатое ФОТО.")
         return
-    caption = message.caption
+        
+    caption = message.html_caption
     if not caption:
         bot.reply_to(message, "Ошибка: пустой контент. Отправь фото с описанием.")
         return
+        
     try:
         bot.reply_to(message, "Принято в обработку...")
         file_id = message.photo[-1].file_id
         file_info = bot.get_file(file_id)
         downloaded_file = bot.download_file(file_info.file_path)
+        
         img_io = BytesIO(downloaded_file)
         processed_image = process_image(img_io)
+        
         markup = telebot.types.InlineKeyboardMarkup()
         btn = telebot.types.InlineKeyboardButton(text="Дізнатися ціну / Наявність", url="https://t.me/TIR_PegasAT")
         markup.add(btn)
+        
         full_post_text = f"{caption}\n\n{FOOTER_TEXT}"
-        bot.send_photo(chat_id=CHANNEL_ID, photo=processed_image, caption=full_post_text, reply_markup=markup)
+        
+        bot.send_photo(
+            chat_id=CHANNEL_ID,
+            photo=processed_image,
+            caption=full_post_text,
+            parse_mode='HTML',
+            show_caption_above_media=True,
+            reply_markup=markup
+        )
         bot.reply_to(message, "Опубликовано.")
+        
     except Exception as e:
         bot.reply_to(message, f"Ошибка: {str(e)}")
 
