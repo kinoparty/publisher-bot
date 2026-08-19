@@ -15,10 +15,10 @@ WATERMARK_TEXT = "MOST AUTO"
 FOOTER_TEXT = """<b>📞 Потрібна допомога з підбором?</b>
 Наші фахівці швидко підберуть необхідну деталь саме для вашого автомобіля.
 
-🔴 0953450040  🔹 0973450040
+🔴 0953450040   🔵 0973450040
 
 <b>PEGAS АВТОТРЕЙД</b>
-✔️ Оригінальні запчастини IVECO
+✅ Оригінальні запчастини IVECO
 💳 Безготівковий розрахунок
 📦 Самовивіз або доставка Новою Поштою
 
@@ -71,7 +71,6 @@ def handle_photo_post(message):
             photo=processed_image,
             caption=full_post_text,
             parse_mode='HTML',
-            show_caption_above_media=True,
             reply_markup=markup
         )
         bot.reply_to(message, "Опубликовано.")
