@@ -1,1 +1,3 @@
-
+pyTelegramBotAPI
+Flask
+Pillow==10.2.0
