@@ -62,7 +62,7 @@ def handle_photo_post(message):
         processed_image = process_image(img_io)
         
         markup = telebot.types.InlineKeyboardMarkup()
-        btn = telebot.types.InlineKeyboardButton(text="Узнать цену / Наличие", url="https://t.me/TIR_PegasAT")
+        btn = telebot.types.InlineKeyboardButton(text="Дізнатися ціну / Наявність", url="https://t.me/TIR_PegasAT")
         markup.add(btn)
         
         full_post_text = f"{caption}\n\n{FOOTER_TEXT}"
