@@ -9,7 +9,7 @@ bot = telebot.TeleBot(TELEGRAM_TOKEN)
 app = Flask(__name__)
 
 CHANNEL_ID = "@TIR_PegasAT"
-ADMINS = [8073382390]
+ADMINS = 8073382390
 WATERMARK_TEXT = "MOST AUTO"
 
 FOOTER_TEXT = """
