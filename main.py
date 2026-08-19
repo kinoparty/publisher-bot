@@ -4,17 +4,14 @@ from flask import Flask, request
 from io import BytesIO
 from PIL import Image, ImageDraw, ImageFont
 
-# 1. Инициализация переменных окружения и бота (ДО обработчиков)
 TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN", "твой_токен_если_нет_в_переменных")
 bot = telebot.TeleBot(TELEGRAM_TOKEN)
 app = Flask(__name__)
 
-# 2. Настройки
 CHANNEL_ID = "@твой_канал" 
-ADMINS = [123456789, 987654321] # Замени на свои ID
+ADMINS = [123456789, 987654321] 
 WATERMARK_TEXT = "MOST AUTO"
 
-# 3. Функция обработки фото
 def process_image(photo_bytes):
     img = Image.open(photo_bytes)
     draw = ImageDraw.Draw(img)
@@ -24,7 +21,6 @@ def process_image(photo_bytes):
     except IOError:
         font = ImageFont.load_default()
     
-    # Наложение водяного знака
     draw.text((20, 20), WATERMARK_TEXT, font=font, fill=(255, 255, 255, 200))
     
     output_bytes = BytesIO()
@@ -32,7 +28,6 @@ def process_image(photo_bytes):
     output_bytes.seek(0)
     return output_bytes
 
-# 4. Обработчик сообщений с фото
 @bot.message_handler(content_types=['photo'])
 def handle_photo_post(message):
     if message.from_user.id not in ADMINS:
@@ -63,7 +58,6 @@ def handle_photo_post(message):
     except Exception as e:
         bot.reply_to(message, f"Ошибка: {str(e)}")
 
-# 5. Маршруты Flask для работы вебхука в Cloud Run
 @app.route('/' + TELEGRAM_TOKEN, methods=['POST'])
 def getMessage():
     bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
@@ -72,11 +66,8 @@ def getMessage():
 @app.route("/")
 def webhook():
     bot.remove_webhook()
-    # Этот эндпоинт можно дернуть в браузере для автоматической установки вебхука
-    # подставив свой URL вместо "твой-url-из-cloud-run"
-    bot.set_webhook(url='https://твой-url-из-cloud-run.a.run.app/' + TELEGRAM_TOKEN)
+    bot.set_webhook(url='https://publisher-bot-992802077002.europe-west1.run.app/' + TELEGRAM_TOKEN)
     return "Webhook set!", 200
 
-# 6. Запуск сервера
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get('PORT', 8080)))
