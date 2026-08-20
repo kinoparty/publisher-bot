@@ -1,6 +1,7 @@
 import os
 import telebot
 import urllib.parse
+import time
 from flask import Flask, request
 from io import BytesIO
 from PIL import Image
@@ -63,6 +64,9 @@ def handle_photo_post(message):
             caption=full_post_text,
             parse_mode='HTML'
         )
+        
+        # ПАУЗА: даем серверам Telegram создать ветку комментариев
+        time.sleep(3)
         
         # 2. Формируем прямую ссылку на опубликованный пост
         channel_name = CHANNEL_ID.replace('@', '')
