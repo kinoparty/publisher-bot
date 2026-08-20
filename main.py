@@ -2,15 +2,14 @@ import os
 import telebot
 from flask import Flask, request
 from io import BytesIO
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image
 
 TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN", "8590903863:AAElvfoY4TyDoWoqXYNncLhIY2VLB0YGuvs")
 bot = telebot.TeleBot(TELEGRAM_TOKEN)
 app = Flask(__name__)
 
 CHANNEL_ID = "@TIR_PegasAT"
-ADMINS = [551563550]
-WATERMARK_TEXT = "MOST AUTO"
+ADMINS = [551563550, 5284430330]
 
 FOOTER_TEXT = """<a href="https://pegasat.com.ua"><b>🔗 Більше оригінальних запчастин</b></a>
 
@@ -26,12 +25,6 @@ FOOTER_TEXT = """<a href="https://pegasat.com.ua"><b>🔗 Більше ориг�
 
 def process_image(photo_bytes):
     img = Image.open(photo_bytes)
-    draw = ImageDraw.Draw(img)
-    try:
-        font = ImageFont.truetype("arial.ttf", 40)
-    except IOError:
-        font = ImageFont.load_default()
-    draw.text((20, 20), WATERMARK_TEXT, font=font, fill=(255, 255, 255, 200))
     output_bytes = BytesIO()
     img.save(output_bytes, format='JPEG')
     output_bytes.seek(0)
@@ -61,7 +54,7 @@ def handle_photo_post(message):
         processed_image = process_image(img_io)
         
         markup = telebot.types.InlineKeyboardMarkup()
-        btn1 = telebot.types.InlineKeyboardButton(text="Дізнатися ціну / Наявність", url="https://t.me/TIR_PegasAT")
+        btn1 = telebot.types.InlineKeyboardButton(text="Дізнатися ціну / Наявність", url="https://t.me/+380973450040")
         btn2 = telebot.types.InlineKeyboardButton(text="Відправити другу ↗️", url="https://t.me/share/url?url=https://t.me/TIR_PegasAT")
         markup.add(btn1)
         markup.add(btn2)
