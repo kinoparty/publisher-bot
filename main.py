@@ -1,5 +1,6 @@
 import os
 import telebot
+import urllib.parse
 from flask import Flask, request
 from io import BytesIO
 from PIL import Image
@@ -9,14 +10,14 @@ bot = telebot.TeleBot(TELEGRAM_TOKEN)
 app = Flask(__name__)
 
 CHANNEL_ID = "@TIR_PegasAT"
-ADMINS = [551563550, 5284430330]
+ADMINS = [551563550]
 
 FOOTER_TEXT = """<a href="https://pegasat.com.ua"><b>🔗 Більше оригінальних запчастин</b></a>
 
 <b>📞 Потрібна допомога з підбором?</b>
 Наші фахівці швидко підберуть необхідну деталь саме для вашого автомобіля.
 
-🔵 0973450040    🔴 0953450040 
+🔵 0973450040   🔴 0953450040
 
 <b>PEGAS АВТОТРЕЙД</b>
 ✅ Оригінальні запчастини IVECO
@@ -53,21 +54,36 @@ def handle_photo_post(message):
         img_io = BytesIO(downloaded_file)
         processed_image = process_image(img_io)
         
-        markup = telebot.types.InlineKeyboardMarkup()
-        btn1 = telebot.types.InlineKeyboardButton(text="Дізнатися ціну / Наявність", url="https://t.me/+380973450040")
-        btn2 = telebot.types.InlineKeyboardButton(text="Відправити другу ↗️", url="https://t.me/share/url?url=https://t.me/TIR_PegasAT")
-        markup.add(btn1)
-        markup.add(btn2)
-        
         full_post_text = f"{caption}\n\n{FOOTER_TEXT}"
         
-        bot.send_photo(
+        # 1. Отправляем пост без кнопок, чтобы получить его ID в канале
+        sent_message = bot.send_photo(
             chat_id=CHANNEL_ID,
             photo=processed_image,
             caption=full_post_text,
-            parse_mode='HTML',
+            parse_mode='HTML'
+        )
+        
+        # 2. Формируем прямую ссылку на опубликованный пост
+        channel_name = CHANNEL_ID.replace('@', '')
+        post_url = f"https://t.me/{channel_name}/{sent_message.message_id}"
+        
+        # 3. Кодируем заготовку текста для менеджера с вшитой ссылкой
+        prefilled_text = f"Доброго дня! Цікавить ціна та наявність запчастини з цього поста:\n{post_url}"
+        encoded_text = urllib.parse.quote(prefilled_text)
+        manager_link = f"https://t.me/+380973450040?text={encoded_text}"
+        
+        # 4. Создаем кнопку с умной ссылкой и прикручиваем к посту
+        markup = telebot.types.InlineKeyboardMarkup()
+        btn1 = telebot.types.InlineKeyboardButton(text="Дізнатися ціну / Наявність", url=manager_link)
+        markup.add(btn1)
+        
+        bot.edit_message_reply_markup(
+            chat_id=CHANNEL_ID, 
+            message_id=sent_message.message_id, 
             reply_markup=markup
         )
+        
         bot.reply_to(message, "Опубликовано.")
         
     except Exception as e:
