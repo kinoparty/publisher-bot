@@ -10,7 +10,7 @@ bot = telebot.TeleBot(TELEGRAM_TOKEN)
 app = Flask(__name__)
 
 CHANNEL_ID = "@TIR_PegasAT"
-ADMINS = [551563550]
+ADMINS = [551563550, 5284430330]
 
 FOOTER_TEXT = """<a href="https://pegasat.com.ua"><b>🔗 Більше оригінальних запчастин</b></a>
 
