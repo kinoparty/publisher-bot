@@ -12,7 +12,7 @@ app = Flask(__name__)
 CHANNEL_ID = "@TIR_PegasAT"
 ADMINS = [551563550, 5284430330]
 
-FOOTER_TEXT = """<a href="https://pegasat.com.ua"><b>🔗 Більше оригінальних запчастин</b></a>
+FOOTER_TEXT = """<a href="https://samosval.pegasat.com.ua/%d0%be%d0%bd%d0%bb%d0%b0%d0%b9%d0%bd-%d1%81%d0%b5%d1%80%d0%b2%d1%96%d1%81-%d0%bf%d1%96%d0%b4%d0%b1%d0%be%d1%80%d1%83-%d0%b7%d0%b0%d0%bf%d1%87%d0%b0%d1%81%d1%82%d0%b8%d0%bd/"><b>🔗 Більше оригінальних запчастин</b></a>
 
 <b>📞 Зателефонуйте нам!</b>
 Наші фахівці швидко підберуть необхідну деталь саме для вашого автомобіля.
